@@ -28,9 +28,14 @@ function main() {
 }
 //  初始化着色器程序，让WebGL知道如何绘制我们的数据
 function initShaderProgram(gl, vsSource, fsSource) {
+    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
 
 }
 // 创建指定类型的着色器，上传source源码并编译
 function loadShader(gl, type, source) {
-    const shader = gl.createShader()
+    const shader = gl.createShader();
+    // Send the source to the shader object
+    gl.shaderSource(shader, source);
+    // Compile the shader program
+    // See if it compiled successfully
 }

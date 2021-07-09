@@ -1,4 +1,4 @@
-export class UserShader {
+class UserShader {
     gl: WebGLRenderingContext
     program: user_ShaderProgram
     constructor(gl: WebGLRenderingContext, vsSource: string, fsSource: string, shaderLocations: user_ShaderLocations) {

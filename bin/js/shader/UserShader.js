@@ -1,4 +1,4 @@
-export class UserShader {
+class UserShader {
     constructor(gl, vsSource, fsSource, shaderLocations) {
         this.gl = gl;
         const vs = this.loadShader(gl, gl.VERTEX_SHADER, vsSource);

@@ -1,4 +1,4 @@
-export class WebGLRenderer {
+class WebGLRenderer {
     constructor(gl, camera) {
         this.material = [];
         this.gl = gl;
@@ -45,21 +45,19 @@ export class WebGLRenderer {
             const stride = 0; // how many bytes to get from one set of values to the next
             // 0 = use type and numComponents above
             const offset = 0; // how many bytes inside the buffer to start from
-            //TODO
-            // gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-            gl.vertexAttribPointer(this.material[0].program.attribs.vertexPosition, numComponents, type, normalize, stride, offset);
-            gl.enableVertexAttribArray(this.material[0].program.attribs.vertexPosition);
+            const buffers = new FBO().initBuffers(gl);
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+            gl.vertexAttribPointer(this.material[0].program.attribs.aVertexPosition, numComponents, type, normalize, stride, offset);
+            gl.enableVertexAttribArray(this.material[0].program.attribs.aVertexPosition);
         }
         // Tell WebGL to use our program when drawing
-        gl.useProgram(this.material[0].program);
+        gl.useProgram(this.material[0].program.glShaderProgram);
         // Set the shader uniforms
-        gl.uniformMatrix4fv(this.material[0].program.uniforms.projectionMatrix, false, projectionMatrix);
-        gl.uniformMatrix4fv(this.material[0].program.uniforms.modelViewMatrix, false, modelViewMatrix);
-        {
-            const offset = 0;
-            const vertexCount = 4;
-            gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
-        }
+        gl.uniformMatrix4fv(this.material[0].program.uniforms.uProjectionMatrix, false, projectionMatrix);
+        gl.uniformMatrix4fv(this.material[0].program.uniforms.uModelViewMatrix, false, modelViewMatrix);
+        const offset = 0;
+        const vertexCount = 4;
+        gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
     }
 }
 //# sourceMappingURL=WebGLRenderer.js.map

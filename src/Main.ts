@@ -1,13 +1,9 @@
-import { WebGLRenderer } from "./renderer/WebGLRenderer";
-import { UserShader } from "./shader/UserShader";
-
-
-export class Main {
+class Main {
   constructor() {
     const canvas: HTMLCanvasElement = document.querySelector('#glcanvas');
     canvas.width = window.screen.width;
     canvas.height = window.screen.height;
-    const gl: WebGL2RenderingContext = canvas.getContext('webgl2');
+    const gl: WebGLRenderingContext = canvas.getContext('webgl');
     if (!gl) {
       alert('Unable to initialize WebGL.');
       return;
@@ -31,9 +27,11 @@ export class Main {
       uniforms: ['uProjectionMatrix', 'uModelViewMatrix'],
       attribs: ['aVertexPosition']
     });
-    const programInfo = user_shader.program;
-    const buffer = new FBO().initBuffers(gl);
+    // const programInfo = user_shader.program;
     const renderer = new WebGLRenderer(gl)
+    renderer.addMaterial(user_shader);
+    renderer.render();
   }
   // drawScene(gl, programInfo, buffers)
 }
+new Main();

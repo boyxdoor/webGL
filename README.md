@@ -1,4 +1,6 @@
 # webGL
+
 webGL practice
 
-1. 获取webgl对象，用指定颜色清除缓存区
+## 获取webgl对象，用指定颜色清除缓存区
+

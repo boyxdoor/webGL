@@ -8,26 +8,21 @@ class Main {
             alert('Unable to initialize WebGL.');
             return;
         }
-        const vsSource = `
-    attribute vec4 aVertexPosition;
-    
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
-
-    void main() {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+        function setSize(width, height) {
+            canvas.width = width;
+            canvas.height = height;
+        }
+        setSize(canvas.clientWidth, canvas.clientHeight);
+        window.addEventListener('resize', () => setSize(canvas.clientWidth, canvas.clientHeight));
+        this.init(gl);
     }
-  `;
-        const fsSource = `
-    void main() {
-      gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    }
-  `;
+    async init(gl) {
+        const vsSource = await loadShaderFromFile('../glsl/VertexShader.glsl');
+        const fsSource = await loadShaderFromFile('../glsl/FragmentShader.glsl');
         const user_shader = new UserShader(gl, vsSource, fsSource, {
             uniforms: ['uProjectionMatrix', 'uModelViewMatrix'],
-            attribs: ['aVertexPosition']
+            attribs: ['aVertexPosition', 'aVertexColor']
         });
-        // const programInfo = user_shader.program;
         const renderer = new WebGLRenderer(gl);
         renderer.addMaterial(user_shader);
         renderer.render();

@@ -78,5 +78,8 @@ interface user_ShaderLocations {
 interface user_ShaderProgram {
   glShaderProgram: WebGLProgram,
   uniforms?: Record<string, WebGLUniformLocation>
-  attribs?: Record<string, number>
+  attribs?: {
+    aVertexPosition?: number,
+    aVertexColor?: number
+  }
 }

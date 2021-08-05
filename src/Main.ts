@@ -16,6 +16,8 @@ class Main {
     window.addEventListener('resize', () => setSize(canvas.clientWidth, canvas.clientHeight));
     this.init(gl);
   }
+  renderer: WebGLRenderer
+
   async init(gl: WebGLRenderingContext) {
 
     const vsSource = await loadShaderFromFile('../glsl/VertexShader.glsl');
@@ -26,7 +28,13 @@ class Main {
     });
     const renderer = new WebGLRenderer(gl);
     renderer.addMaterial(user_shader);
-    renderer.render();
+    const render = (now: number) => {
+      now *= 0.001;
+      renderer.render(now);
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render)
   }
 }
 new Main();

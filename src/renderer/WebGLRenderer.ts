@@ -7,7 +7,7 @@ class WebGLRenderer {
   addMaterial(material: UserShader) {
     this.material.push(material);
   }
-  render() {
+  render(delta: number) {
     const gl = this.gl;
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
@@ -45,15 +45,23 @@ class WebGLRenderer {
 
     // Now move the drawing position a bit to where we want to
     // start drawing the square.
-
     mat4.translate(modelViewMatrix,     // destination matrix
       modelViewMatrix,     // matrix to translate
       [-0.0, 0.0, -6.0]);  // amount to translate
 
+    const rotation_angle = delta;
+    mat4.rotate(modelViewMatrix,  // destination matrix
+      modelViewMatrix,  // matrix to rotate
+      rotation_angle,     // amount to rotate in radians
+      [0, 0, 1]);       // axis to rotate around (Z)
+    mat4.rotate(modelViewMatrix,  // destination matrix
+      modelViewMatrix,  // matrix to rotate
+      rotation_angle * .7,// amount to rotate in radians
+      [0, 1, 0]);       // axis to rotate around (X)
     // Tell WebGL how to pull out the positions from the position
     // buffer into the vertexPosition attribute.
     {
-      const numComponents = 2;  // pull out 3 values per iteration
+      const numComponents = 3;  // pull out 3 values per iteration
       const type = gl.FLOAT;    // the data in the buffer is 32bit floats
       const normalize = false;  // don't normalize
       const stride = 0;         // how many bytes to get from one set of values to the next
@@ -81,6 +89,7 @@ class WebGLRenderer {
       gl.enableVertexAttribArray(
         this.material[0].program.attribs.aVertexColor
       )
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.vertices);
     }
 
     // Tell WebGL to use our program when drawing
@@ -98,8 +107,9 @@ class WebGLRenderer {
       false,
       modelViewMatrix);
 
-    const offset = 0;
-    const vertexCount = 4;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    // const offset = 0;
+    // const vertexCount = 4;
+    // gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
   }
 }

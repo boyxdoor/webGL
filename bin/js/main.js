@@ -25,7 +25,12 @@ class Main {
         });
         const renderer = new WebGLRenderer(gl);
         renderer.addMaterial(user_shader);
-        renderer.render();
+        const render = (now) => {
+            now *= 0.001;
+            renderer.render(now);
+            requestAnimationFrame(render);
+        };
+        requestAnimationFrame(render);
     }
 }
 new Main();
